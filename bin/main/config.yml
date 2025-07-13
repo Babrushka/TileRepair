@@ -1,2 +1,6 @@
 radius: "15"
 key: "211"
+floorname: "carpentry_02_58"
+restoreFloors: "true"
+deleteTiles: "true"
+restoreOtherObjects: "true"

@@ -1,7 +1,9 @@
-build/
+build/resources
+build/tmp
 .gradle/
 .vscode/
 bin/*
+bin/
 build/*
 !build/libs
 build/libs/*
