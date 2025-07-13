@@ -12,6 +12,8 @@
 
 1.5 copy TileRepair/build/libs/tilerepair-v*.jar to "Project Zomboid"/plugins folder
 
+1.6 run AvrixLauncher-Client-NoSteam.bat to start the game
+
 ### build from source
 
 #### pre requirements
