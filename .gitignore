@@ -2,6 +2,7 @@ build/
 .gradle/
 .vscode/
 bin/*
-bin/main/
+build/*
+!build/libs
 build/libs/*
-build/tmp/*
+!build/libs/tilerepair-*.jar
