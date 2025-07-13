@@ -1,0 +1,13 @@
+name: "Tile Repair Plugin"
+id: "tilerepair-client-plugin"
+description: "Tile Repair Client Plugin. Allows to delete unwanted filtered tiles, and restore default ones in chunks around player"
+author: "Babrushka"
+version: "%PROJECT_VERSION%"
+environment: "client"
+license: "MIT"
+contacts: "https://github.com/brov3r/avrix"
+entrypoints:
+  - "com.avrix.tilerepair.Main"
+dependencies:
+  pz-core: ">=41.78.16"
+  avrix-loader: ">=1.0.0"
