@@ -2,5 +2,6 @@ build/
 .gradle/
 .vscode/
 bin/*
+bin/main/
 build/libs/*
 build/tmp/*
