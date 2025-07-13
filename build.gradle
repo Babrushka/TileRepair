@@ -50,7 +50,7 @@ dependencies {
      * Utils
      */
     compileOnly('org.javassist:javassist:3.30.2-GA')
-
+    
     /**
      * Avrix Loader
      */
