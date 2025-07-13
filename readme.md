@@ -1,18 +1,18 @@
 ### install through compiled binaries
 
-1. download and install https://github.com/Brov3r/Avrix
+1. Download and install https://github.com/Brov3r/Avrix
 
-1.1 download Avrix-Core-1.5.2.jar from releases page and place it to "Project Zomboid" root folder
+1.1 Download Avrix-Core-1.5.2.jar from releases page and put it to "Project Zomboid" root folder
 
-1.2 same thing with AvrixLauncher-Client-NoSteam.bat
+1.2 Download AvrixLauncher-Client-NoSteam.bat from releases page and put it to "Project Zomboid" root folder
 
 1.3 configure AvrixLauncher-Client-NoSteam.bat if needed.
 
-1.4 downloade sources from https://github.com/Babrushka/TileRepair
+2. Download sources from https://github.com/Babrushka/TileRepair
 
-1.5 copy TileRepair/build/libs/tilerepair-v*.jar to "Project Zomboid"/plugins folder
+3. copy TileRepair/build/libs/tilerepair-v*.jar to "Project Zomboid"/plugins folder
 
-1.6 run AvrixLauncher-Client-NoSteam.bat to start the game
+4. run AvrixLauncher-Client-NoSteam.bat to start the game
 
 ### build from source
 
