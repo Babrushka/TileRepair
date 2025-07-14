@@ -1,6 +1,28 @@
-radius: "15"
-key: "211"
-floorname: "carpentry_02_58"
-restoreFloors: "true"
-deleteTiles: "true"
-restoreOtherObjects: "true"
+##### hotkey definition #####
+key: "211" #del as default
+
+#############################
+#### delete tiles funtion ###
+#############################
+
+deleteTiles: "true"   #enabled
+radius: "15"          #affected radius, 15 means a 31x31 square around player will be affected
+
+#"carpentry_01_16", "", 2000000
+objectSpriteName: ""  #object.spriteName property. usually empty for normal tiles, but can be not null in some powerful grief strategies
+spriteSpriteName: "fixtures_doors_fences_01_28"  #another way to specify sprite name, same as object.sprite.name, object.getSprite().getName(); 
+spriteID: "226028"          #regular sprite id
+
+
+#############################
+#### restore floors func ###
+#############################
+
+restoreFloors: "false"          
+floorname: "carpentry_02_58"    ###only specified tiles will be affected. leave empty via "" to affect all tiles in chunk
+
+#############################
+#### restore objects func ###
+#############################
+restoreOtherObjects: "false"    ### complex procedure to restore default objects in chunk, leaving untouched objects created by users;
+                                ### to achieve best results it is recomennded to clear chunk, to get 99.999% effective restore . . .

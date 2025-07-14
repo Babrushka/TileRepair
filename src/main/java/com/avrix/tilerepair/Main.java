@@ -28,11 +28,14 @@ public class Main extends Plugin {
 
         int rad = Integer.parseInt(getDefaultConfig().getString("radius"));
         int key = Integer.parseInt(getDefaultConfig().getString("key"));
+        int spriteID = Integer.parseInt(getDefaultConfig().getString("spriteID"));
         boolean restoreFloors = Boolean.parseBoolean(getDefaultConfig().getString("restoreFloors"));
         boolean restoreOtherObjects = Boolean.parseBoolean(getDefaultConfig().getString("restoreOtherObjects"));
         boolean deleteTiles = Boolean.parseBoolean(getDefaultConfig().getString("deleteTiles"));
         String floorName = getDefaultConfig().getString("floorname");
-        EventManager.addListener(new KeyHandler(15, 211, floorName, restoreFloors, restoreOtherObjects, deleteTiles));
+        String objectSpriteName = getDefaultConfig().getString("objectSpriteName");
+        String spriteSpriteName = getDefaultConfig().getString("spriteSpriteName");;
+        EventManager.addListener(new KeyHandler(15, 211, floorName, restoreFloors, restoreOtherObjects, deleteTiles, spriteSpriteName, objectSpriteName, spriteID));
 
         System.out.println("[#] Config: ");
         
