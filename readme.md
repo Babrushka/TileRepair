@@ -15,8 +15,9 @@ Plugin allows to delete unwanted objects from around the player in specified rad
 Deleted tiles must be configured via 3 fields:
     - __objectSpriteName__ in java is `object.spriteName` field 
     - __spriteSpriteName__ `object.sprite.name` or `object.getSprite().getName()`
-    - __spriteID__
-Also enable this function in config file.
+    - __spriteID__.
+
+Procedure can enabled or disabled in config file.
 
 #### Restore floors
 
