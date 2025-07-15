@@ -31,11 +31,11 @@ The only specified field is __floorName__: same as object.sprite.name, can be sp
 
 ### Restore other objecs
 
-For user the result of this procedure looks same as Restore floors, but this procedure is a bit complicated in comparsion to previous one. It create's all default objects in chunk (except floors), compares them with existing, delete copies, and tries to sync unique created objects to server, skipping sync on existing objects. This algo can lead to unexpected behaviour on complex chuncks with many user objects. 
+For user the result of this procedure looks same as Restore floors, but this procedure is a bit complicated in comparsion to previous one. It creates all default objects in chunk (except floors), compares them with existing, delete copies, and tries to sync unique created objects to server, skipping sync on existing objects. This algo can lead to unexpected behaviour on complex chuncks with many user objects. 
 > [!TIP] 
 > To achieve best results it is recommended to clear chunk from user objects placed on squares, where default one's can be spawned, close all doors, etc.
 
-
+[!NOTE] All Described above procedures only works on level 0. Probably feature versions will allow to use other values.
 ***
 ## Install through compiled binaries
 
@@ -59,29 +59,20 @@ For user the result of this procedure looks same as Restore floors, but this pro
 
 #### Prerequirements:
 
-1. ```
-    git clone --branch v1.5.2 https://github.com/Brov3r/Avrix
-    ```
-
-2. ```
-    cd avrix
-    ```
-
-3. __Build__ avrix and all dependencies using original Brov3r's guide.
+```
+git clone --branch v1.5.2 https://github.com/Brov3r/Avrix
+cd avrix
+```
+__Build__ avrix and all dependencies using original Brov3r's guide.
 
 ### Copy and build plugin:
 
-1. ```
-    cd avrix && mkdir plugins && cd plugins
-    ```
-
-2. ```
-    git clone https://github.com/Babrushka/TileRepair
-    ```
-
-3. ```
-    gradle build
-    ```
+```
+cd avrix && mkdir plugins && cd plugins
+git clone https://github.com/Babrushka/TileRepair
+cd TileRepair
+gradle build
+```
 
 > [!IMPORTANT] 
 > Building from sources requires JDK-17 for compability with the game!
