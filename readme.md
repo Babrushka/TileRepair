@@ -25,7 +25,9 @@ Procedure can enabled or disabled in config file.
 Restore floor function attempts to read tiledefinitions from native PZ *.lotpack files and apply them to all squares in player chunk (10x10 space around player, linked to gamegrid, not relative to player). 
 Algorigthm of restoring readind datafiles and applying changes is simillar to one, used when new unvisited chunks are created. Not a secret, it was copied and a bit mididied from PZ source code.
 
-The only specified field is __floorName__: same as object.sprite.name, can be specified to apply changes only on specified floors.
+__floorList__ can be specified same way described above to restore floors only on specified tiles;
+> [!IMPORTANT]
+> If game contains multiple floors, overlaying default one the changes will be applied only to first object recieved by square.getFloor() native procedure.
 
 ### Restore other objecs
 
