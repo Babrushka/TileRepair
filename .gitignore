@@ -8,3 +8,4 @@ build/*
 !build/libs
 build/libs/*
 !build/libs/tilerepair-*.jar
+launch.bat

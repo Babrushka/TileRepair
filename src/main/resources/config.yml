@@ -1,28 +1,54 @@
-##### hotkey definition #####
-key: "211" #del as default
+#####  hotkey definition #####
+hotkey: 211 
+#delete is default key with 211 code.
 
+##############################
+#### delete tiles funtion ####
+##############################
+
+#true/false - enabled/disabled
+deleteTiles: true  
+
+#affected radius, 15 means a 31x31 square around player will be affected
+radius: 15          
+
+# object.spritename:"carpentry_01_16", spriteid: 2000000 - example of properties for cheatbox.
+
+tilesToRemoveList:
+  - sprite.name: "fixtures_doors_fences_01_28"
+  - sprite.name: "fixtures_doors_fences_01_29"
+
+#object.spritename, sprite.name, spriteID fields are recognized;
+
+#example of unused here list with multiple objects specified:
+unusedList:
+  - spriteID: 2000000
+    object.spritename: "carpentry_01_16"
+  - spriteID: 226028
+    object.spritename: ""
+    sprite.name: "fixtures_doors_fences_01_28"
+  - sprite.name: "fixtures_doors_fences_01_29"
+
+#all can be specified to delete everything (will work skipping floors to avoid troubles):
+unusedList2:
+  - "all"
+
+
+#############################n
+#### restore floors func ####
 #############################
-#### delete tiles funtion ###
-#############################
 
-deleteTiles: "true"   #enabled
-radius: "15"          #affected radius, 15 means a 31x31 square around player will be affected
+restoreFloors: true        
+  
+#only specified tiles will be affected. same format as list described above;
+floorList: 
+  #- sprite.name: "carpentry_02_56"
+  - "all"
 
-#"carpentry_01_16", "", 2000000
-objectSpriteName: ""  #object.spriteName property. usually empty for normal tiles, but can be not null in some powerful grief strategies
-spriteSpriteName: "fixtures_doors_fences_01_28"  #another way to specify sprite name, same as object.sprite.name, object.getSprite().getName(); 
-spriteID: "226028"          #regular sprite id
+##############################
+#### restore objects func ####
+##############################
+restoreOtherObjects: true    
 
-
-#############################
-#### restore floors func ###
-#############################
-
-restoreFloors: "false"          
-floorname: "carpentry_02_58"    ###only specified tiles will be affected. leave empty via "" to affect all tiles in chunk
-
-#############################
-#### restore objects func ###
-#############################
-restoreOtherObjects: "false"    ### complex procedure to restore default objects in chunk, leaving untouched objects created by users;
-                                ### to achieve best results it is recomennded to clear chunk, to get 99.999% effective restore . . .
+### complex procedure to restore default objects in chunk, leaving untouched objects created by users;
+### to achieve best results it is recomennded to clear chunk, to get 99.999% effective restore . . .

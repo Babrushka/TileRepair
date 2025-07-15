@@ -3,8 +3,9 @@ This plugin is intended to use for repairing tiles/squares/chunks destroyed by g
 
 #### Launch in game
 
-After installing all files launch game through avrix launcer, sign in to server/singleplayer, and press <em>delete</em>. It will launch described above procedures (all in one, but each procedure can be disabled).
+After installing all files launch game through avrix launcer, sign in to server/singleplayer, and press <em>delete</em>. It will launch described below procedures (all in one, but each procedure can be disabled).
 Hotkey can be configured in __config.yml__ created automatically after 1st lauch of game with plugin.
+Plugin behavior is configured via __config.yml__, please touch it carefully, wrong definitions can harm a lot.
 
 ---
 
@@ -12,9 +13,9 @@ Hotkey can be configured in __config.yml__ created automatically after 1st lauch
 
 Plugin allows to delete unwanted objects from around the player in specified radius (__radius__).
 
-Deleted tiles must be configured via 3 fields:
-    - __objectSpriteName__ in java is `object.spriteName` field 
-    - __spriteSpriteName__ `object.sprite.name` or `object.getSprite().getName()`
+Deleted tiles must be configured via one or more of 3 fields:
+    - __object.spritename__ in java is `object.spriteName` field 
+    - __sprite.name__ `object.sprite.name` or `object.getSprite().getName()`
     - __spriteID__.
 
 Procedure can enabled or disabled in config file.
@@ -25,9 +26,6 @@ Restore floor function attempts to read tiledefinitions from native PZ *.lotpack
 Algorigthm of restoring readind datafiles and applying changes is simillar to one, used when new unvisited chunks are created. Not a secret, it was copied and a bit mididied from PZ source code.
 
 The only specified field is __floorName__: same as object.sprite.name, can be specified to apply changes only on specified floors.
-
-> [!CAUTION] 
-> If in game is no floor (no squares with `solidfloor/diamondfloor` flags, __floorName__ object on square is `null`, etc) procedure crashes!
 
 ### Restore other objecs
 

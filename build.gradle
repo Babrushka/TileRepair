@@ -9,13 +9,21 @@ plugins {
 /**
  * Project Variables
  */
-group = 'com.avrix.tilerepair'
-version = 'v0.3'
+group = 'com.tilerepair'
+version = 'v0.4'
 
 /**
  * Path to the compiled Jar file
  */
 def buildPath = System.getenv('BUILD_PATH') ?: 'build';
+
+/**
+ * Repositories for project dependencies
+ */
+repositories {
+    mavenCentral()
+}
+
 
 /**
  * Replacing data with current ones
@@ -29,22 +37,16 @@ processResources {
 }
 
 /**
- * Repositories for project dependencies
- */
-repositories {
-    mavenCentral()
-}
-
-/**
  * Project Dependencies
  */
 dependencies {
     /**
      * Project Zomboid
-     * Dependencies are created via the Gradle task 'createZombieJar'
+     * Dependencies are created via the Gradle task 'createZombieJar' from avrix
      */
     compileOnly files('../../libs/ProjectZomboid-core-41.78.16.jar')
     compileOnly files('../../libs/ProjectZomboid-libs-41.78.16.jar')
+    compileOnly files('../../build/Avrix-Core-1.5.2.jar')
 
     /**
      * Utils
@@ -54,7 +56,7 @@ dependencies {
     /**
      * Avrix Loader
      */
-    compileOnly project(":")
+    //compileOnly project(":")
 }
 
 /**

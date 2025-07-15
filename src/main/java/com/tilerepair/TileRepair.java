@@ -1,71 +1,69 @@
-package com.avrix.tilerepair;
-
-import com.avrix.events.OnKeyPressedEvent;
+package com.tilerepair;
 
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
-import com.avrix.ui.NanoContext;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import gnu.trove.list.array.TIntArrayList;
 import zombie.characters.IsoPlayer;
 import zombie.core.network.ByteBufferWriter;
 import zombie.core.properties.PropertyContainer;
+import zombie.debug.DebugLog;
 import zombie.iso.CellLoader;
 import zombie.iso.IsoCell;
 import zombie.iso.IsoChunk;
 import zombie.iso.IsoGridSquare;
+import zombie.iso.IsoLot;
 import zombie.iso.IsoObject;
 import zombie.iso.LotHeader;
 import zombie.iso.SpriteDetails.IsoFlagType;
-import zombie.util.list.PZArrayList;
 import zombie.iso.sprite.IsoSprite;
 import zombie.iso.sprite.IsoSpriteInstance;
 import zombie.iso.sprite.IsoSpriteManager;
 import zombie.network.GameClient;
 import zombie.network.PacketTypes;
+import zombie.util.list.PZArrayList;
 
-import zombie.debug.DebugLog;
-import zombie.iso.IsoLot;
-
-
-/**
- * Draw HUD
- */
-public class KeyHandler extends OnKeyPressedEvent {
+public class TileRepair {
     private int radius;
-    private int hotkey;
-    private int spriteID;
+
     private int x, y, wx, wy;
-    private IsoSprite[][] floorSprites;
     private IsoPlayer player;
     private IsoGridSquare gsquare;
     private IsoChunk chunk;
     private IsoCell cell;
-    IsoLot lot = null;
-    private String floorName, objectSpriteName, spriteSpriteName;
-    boolean restoreFloors, deleteTiles, restoreOtherObjects;
-    ArrayList<IsoSprite>[][] objectSprites, floorOverlays;
-    ArrayList<String>[][] objectSpritesStrings, floorOverlaysStrings;
 
-    public KeyHandler(int _radius, int _key, String _floorName, boolean _restoreFloors, boolean _restoreOtherObjects,
-            boolean _deleteTiles, String _spriteSpriteName, String _objectSpriteName, int _spriteID) {
-        this.spriteSpriteName = _spriteSpriteName;
-        this.objectSpriteName = _objectSpriteName;
-        this.spriteID = _spriteID;
+    private IsoLot lot = null;
+    private ArrayList<IsoSprite>[][] objectSprites, floorOverlays;
+    private ArrayList<String>[][] objectSpritesStrings, floorOverlaysStrings;
+    private IsoSprite[][] floorSprites;
+
+    List<Object> tilesToRemoveList;
+    List<Object> floorList;
+
+    
+    public TileRepair(int _radius, List<Object>[] lists) {
         this.radius = _radius;
-        this.floorName = _floorName;
-        this.hotkey = _key;
+
+        this.floorList = lists[0];
+        this.tilesToRemoveList = lists[1];
+
         this.floorSprites = new IsoSprite[10][10];
         this.floorOverlays = new ArrayList[10][10];
         this.objectSprites = new ArrayList[10][10];
         this.objectSpritesStrings = new ArrayList[10][10];
         this.floorOverlaysStrings = new ArrayList[10][10];
-        this.restoreFloors = _restoreFloors;
-        this.restoreOtherObjects = _restoreOtherObjects;
-        this.deleteTiles = _deleteTiles;
+    }
 
+    public void Init(){
+        this.player = IsoPlayer.getInstance();
+        this.gsquare = player.getSquare();
+        this.x = gsquare.getX();
+        this.y = gsquare.getY();
+        this.cell = player.getCell();
     }
 
     private void sendPacketDestroyObjectonSquare(IsoGridSquare square, IsoObject object) {
@@ -73,18 +71,102 @@ public class KeyHandler extends OnKeyPressedEvent {
         PacketTypes.PacketType.SledgehammerDestroy.doPacket(byteBufferWriter);
         byteBufferWriter.putInt(square.getX());
         byteBufferWriter.putInt(square.getY());
-        //asdsdgg
         byteBufferWriter.putInt(square.getZ());
         byteBufferWriter.putInt(square.getObjects().indexOf(object));
         PacketTypes.PacketType.SledgehammerDestroy.send(GameClient.connection);
     }
 
-    
+    private boolean checkFloor(IsoObject obj) {
+        PropertyContainer props = obj.sprite.getProperties();
+        if (props.Is(IsoFlagType.solidfloor) && props.Is(IsoFlagType.diamondFloor)
+                                        && !props.Is(IsoFlagType.transparentFloor)){
+            return true;
+        } else{
+            return false;
+        }
+    }
 
-    public void ReadDefaultSprites(IsoLot lot) {
+    private boolean compareObjects(IsoObject object, List<Object> List, boolean floor) {
+        if (object==null)
+            return false;
+        if (object.sprite == null)
+            return false;
+        if (checkFloor(object) != floor) {
+            return false;
+        }
+        for (Object obj : List) {
+            if (obj.equals("all") || obj.equals("All") || obj.equals("ALL")) {
+                return true;
+            } else {
+                LinkedHashMap hobj = (LinkedHashMap) obj;
+                String objectSpritename = object.getSpriteName();
+                if (objectSpritename == null) {
+                    objectSpritename = "";
+                }
+                String spriteSpriteName = object.sprite.getName();
+                if (spriteSpriteName == null) {
+                    spriteSpriteName = "";
+                }
+                int spriteID = object.sprite.getID();
+
+                String _spriteSpriteName = (String) hobj.get("sprite.name");
+                String _objectSpritename = (String) hobj.get("object.spritename");
+                Integer _spriteID = (Integer) hobj.get("spriteID");
+                boolean id = false, nsprite = false, nobject = false;
+                if (_spriteSpriteName != null) {
+                    if (_spriteSpriteName.equals(spriteSpriteName)) {
+                        nsprite = true;
+                    }
+                } else {
+                    nsprite = true;
+                }
+                if (_objectSpritename != null) {
+                    if (_objectSpritename.equals(objectSpritename)) {
+                        nobject = true;
+                    }
+                } else {
+                    nobject = true;
+                }
+                if (_spriteID != null) {
+                    if (_spriteID == spriteID) {
+                        id = true;
+                    }
+                } else {
+                    id = true;
+                }
+                if (id && nsprite && nobject) {
+                    return true;
+                }
+            }
+            
+        }
+        return false;
+    }
+
+    public void clearLot(){
+        IsoLot.put(lot);
+    }    
+    public void readDataFiles() {
+        chunk = player.getChunk();
+        wx = chunk.wx;
+        wy = chunk.wy;
+        String datafilename = "world_" + wx / 30 + "_" + wy / 30 + ".lotpack";
+        if (!IsoLot.InfoFileNames.containsKey(datafilename)) {
+            DebugLog.log("LoadCellBinaryChunk: NO SUCH LOT " + datafilename);
+        } else {
+            File file = new File(IsoLot.InfoFileNames.get(datafilename));
+            if (file.exists()) {
+                
+                this.lot = IsoLot.get(wx / 30, wy / 30, wx, wy, chunk);
+                //cell.PlaceLot(lot, 0, 0, 0, chunk, wx, wy);
+                this.ReadDefaultSprites(lot);
+            }
+        }
+    }
+
+    private void ReadDefaultSprites(IsoLot lot) {
 
         Field finfo = null, fm_offsetInData = null, fm_data = null, ftilesUsed = null;
-        ;
         try {
             finfo = lot.getClass().getDeclaredField("info");
             fm_data = lot.getClass().getDeclaredField("m_data");
@@ -137,14 +219,14 @@ public class KeyHandler extends OnKeyPressedEvent {
                                 }
                                 IsoSprite sprite = IsoSpriteManager.instance.NamedMap.get(string);
                                 PropertyContainer props = sprite.getProperties();
-                                if (props.Is(IsoFlagType.solidfloor) && props.Is(IsoFlagType.diamondFloor) && !props.Is(IsoFlagType.transparentFloor)) {
+                                if (props.Is(IsoFlagType.solidfloor) && props.Is(IsoFlagType.diamondFloor)
+                                        && !props.Is(IsoFlagType.transparentFloor)) {
                                     this.floorSprites[i][j] = sprite;
                                     this.floorOverlays[i][j].clear();
                                     this.floorOverlaysStrings[i][j].clear();
                                     this.objectSprites[i][j].clear();
                                     this.objectSpritesStrings[i][j].clear();
-                                }
-                                else if (sprite.getProperties().Is(IsoFlagType.FloorOverlay)) {
+                                } else if (sprite.getProperties().Is(IsoFlagType.FloorOverlay)) {
                                     this.floorOverlays[i][j].add(sprite);
                                     this.floorOverlaysStrings[i][j].add(string);
                                 } else {
@@ -161,26 +243,8 @@ public class KeyHandler extends OnKeyPressedEvent {
 
     }
 
-    private void readDataFiles(IsoPlayer player) {
-        chunk = player.getChunk();
-        wx = chunk.wx;
-        wy = chunk.wy;
-        String datafilename = "world_" + wx / 30 + "_" + wy / 30 + ".lotpack";
-        if (!IsoLot.InfoFileNames.containsKey(datafilename)) {
-            DebugLog.log("LoadCellBinaryChunk: NO SUCH LOT " + datafilename);
-        } else {
-            File file = new File(IsoLot.InfoFileNames.get(datafilename));
-            if (file.exists()) {
-                
-                this.lot = IsoLot.get(wx / 30, wy / 30, wx, wy, chunk);
-                //cell.PlaceLot(lot, 0, 0, 0, chunk, wx, wy);
-                this.ReadDefaultSprites(lot);
-            }
-        }
-    }
+    public void restoreFloor() {
 
-    private void restoreFloor() {
-        
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 IsoGridSquare square = cell.getGridSquare(wx * 10 + i, wy * 10 + j, 0);
@@ -189,11 +253,11 @@ public class KeyHandler extends OnKeyPressedEvent {
                 String str = sprite.getName();
                 if (str == null)
                     str = "";
-                    if ((floorName.equals("") || floorName.equals(str)) && object!=null) {
+                if (compareObjects(object, floorList, true) || object==null) {
                     object.clearAttachedAnimSprite();
                     object.setSprite(this.floorSprites[i][j]);
                     int size = this.floorOverlays[i][j].size();
-                    
+
                     for (int over = 0; over < size; over++) {
                         IsoSprite _overlaySprite = this.floorOverlays[i][j].get(over);
                         String _overlayString = floorOverlaysStrings[i][j].get(over);
@@ -203,7 +267,7 @@ public class KeyHandler extends OnKeyPressedEvent {
                             object.AttachedAnimSprite = new ArrayList<IsoSpriteInstance>(4);
                         }
                         object.AttachedAnimSprite.add(IsoSpriteInstance.get(_overlaySprite));
-    
+
                     }
                     //square.FixStackableObjects();
                     //object = square.getFloor();
@@ -211,13 +275,11 @@ public class KeyHandler extends OnKeyPressedEvent {
                         object.transmitUpdatedSpriteToServer();
 
                 }
-            
-                    
+
             }
         }
     }
-
-    private void restoreObjects() {
+    public void restoreObjects() {
         //cell.PlaceLot(lot, 0, 0, 0, chunk, wx, wy);
         Field fmissingTiles = null;
         
@@ -302,75 +364,21 @@ public class KeyHandler extends OnKeyPressedEvent {
 
     }
 
-    private void deleteTiles() {
+    public void deleteTiles() {
         for (int i = (x - radius); i <= (x + radius); i++) {
             for (int j = y - radius; j <= (y + radius); j++) {
                 IsoGridSquare square = cell.getGridSquare(i, j, 0);
                 PZArrayList<IsoObject> objects = square.getObjects();
                 for (int k = objects.size() - 1; k >= 0; k--) {
                     IsoObject object = objects.get(k);
-                    
-
-                    String _spriteSpriteName = object.sprite.name;
-                    if (_spriteSpriteName == null)
-                        _spriteSpriteName = "";
-                    String _objectSpriteName = object.getSpriteName();
-                    if (_objectSpriteName == null)
-                        _objectSpriteName = "";
-                    if (object.getSprite().getID() == this.spriteID
-                            && _spriteSpriteName.equals(this.spriteSpriteName)
-                            && _objectSpriteName.equals(this.objectSpriteName)) 
+                    if (compareObjects(object, this.tilesToRemoveList, false)) 
                     {
                         if (zombie.network.GameClient.connection != null)
                             sendPacketDestroyObjectonSquare(square, object);
                         square.RemoveTileObject(object);
                     }
-
-                    
-
                 }
             }
         }
-    }
-
-    
-
-    /**
-     * Called Event Handling Method
-     *
-     * @param key {@link NanoContext} in which NanoVG is initialized
-     */
-    @Override
-    public void handleEvent(Integer key) {
-        if (key == this.hotkey) {
-            player = IsoPlayer.getInstance();
-            gsquare = player.getSquare();
-            x = gsquare.getX();
-            y = gsquare.getY();
-            cell = player.getCell();
-            
-            if (this.deleteTiles) deleteTiles();
-            int k = 0;
-            readDataFiles(player);
-            if (this.restoreFloors) restoreFloor();
-            if (this.restoreOtherObjects) restoreObjects();
-            IsoLot.put(lot);
-        }
-    }
-
+    }    
 }
-
-///// example of cheat tile creation algo, probably some code is missing. never used;
-
-/*          
-            IsoObject obj = IsoObject.getNew();
-            obj.setType(IsoObjectType.MAX);
-            obj.setSprite("carpentry_01_16");
-            obj.sprite.setName("carpentry_01_16");
-            obj.spriteName = "carpentry_01_16";   //this or above, makes same object looking like brazil one;
-                    
-            
-            //obj.setSquare(gsquare);
-            //gsquare.AddSpecialObject(obj); 
-*/
-
