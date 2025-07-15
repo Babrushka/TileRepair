@@ -3,8 +3,8 @@ This plugin is intended to use for repairing tiles/squares/chunks destroyed by g
 
 ### Launch in game
 
-After installing all files launch game through avrix launcer, sign in to server/singleplayer, and press delete. It will launch described above procedures (all in one, but each procedure can be disabled).
-Hotket can be configured in __config.yml__ created automatically after 1st lauch a game with plugin.
+After installing all files launch game through avrix launcer, sign in to server/singleplayer, and press <em>delete</em>. It will launch described above procedures (all in one, but each procedure can be disabled).
+Hotket can be configured in __config.yml__ created automatically after 1st lauch of game with plugin.
 
 #### Delete unwanted tiles, even not native objects created programmaticaly.
 
