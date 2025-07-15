@@ -1,45 +1,83 @@
-### install through compiled binaries
+## Features
+This plugin is intended to use for repairing tiles/squares/chunks destroyed by griefers or even players.
 
-1. Download and install https://github.com/Brov3r/Avrix
+### Launch in game
 
-1.1. Download Avrix-Core-1.5.2.jar from releases page and put it to "Project Zomboid" root folder
 
-1.2. Download AvrixLauncher-Client-NoSteam.bat from releases page and put it to "Project Zomboid" root folder
+#### Delete unwanted tiles, even not native objects created programmaticaly.
 
-1.2.2. Configure AvrixLauncher-Client-NoSteam.bat if needed.
+Plugin allows to delete unwanted objects from around the player in specified radius (__radius__).
 
-2. Download sources from https://github.com/Babrushka/TileRepair
+Deleted tiles must be configured via 3 fields:
+    - __objectSpriteName__ in java is `object.spriteName` field 
+    - __spriteSpriteName__ `object.sprite.name` or `object.getSprite().getName()`
+    - __spriteID__
+Also enable this function in config file.
 
-2.1. Copy TileRepair/build/libs/tilerepair-v*.jar to "Project Zomboid"/plugins folder
+#### Restore floors
+
+Restore floor function attempts to read tiledefinitions from native PZ *.lotpack files and apply them to all squares in player chunk (10x10 space around player, linked to gamegrid, not relative to player). 
+Algorigthm of restoring readind datafiles and applying changes is simillar to one, used when new unvisited chunks are created. Not a secret, it was copied and a bit mididied from PZ source code.
+
+The only specified field is __floorName__: same as object.sprite.name, can be specified to apply changes only on specified floors.
+
+> [!CAUTION] 
+> If in game is no floor (no squares with `solidfloor/diamondfloor` flags, __floorName__ object on square is `null`, etc) procedure crashes!
+
+#### Restore other objecs
+
+For user the result of this procedure looks same as Restore floors, but this procedure is a bit complicated in comparsion to previous one. It create's all default objects in chunk (except floors), compares them with existing, delete copies, and tries to sync unique created objects to server, skipping sync on existing objects. This algo can lead to unexpected behaviour on complex chuncks with many user objects. 
+> [!TIP] 
+> To achieve best results it is recommended to clear chunk from user objects placed on squares, where default one's can be spawned, close all doors, etc.
+
+
+***
+### Install through compiled binaries
+
+1. Download and install [Avrix Core](https://github.com/Brov3r/Avrix)
+
+    1. Download Avrix-Core-1.5.2.jar from releases page and put it to "Project Zomboid" root folder
+
+    2. Download AvrixLauncher-Client-NoSteam.bat from releases page and put it to "Project Zomboid" root folder
+
+        Configure AvrixLauncher-Client-NoSteam.bat if needed.
+
+2. Download sources from [TileRepair](https://github.com/Babrushka/TileRepair)
+
+    Copy TileRepair/build/libs/tilerepair-v*.jar to "Project Zomboid"/plugins folder
 
 3. Run AvrixLauncher-Client-NoSteam.bat to start the game
 
-### build from source
+***
 
-#### pre requirements
+### Build from source
 
-1.1. `git clone --branch v1.5.2 https://github.com/Brov3r/Avrix` 
+#### Prerequirements:
 
-1.2. `cd avrix` 
+1. ```
+    git clone --branch v1.5.2 https://github.com/Brov3r/Avrix
+    ```
 
-1.3 Build avrix and all dependencies using original Brov3r's guide.
+2. ```
+    cd avrix
+    ```
 
-#### copy and build plugin
+3. __Build__ avrix and all dependencies using original Brov3r's guide.
 
-2.1. `cd avrix && mkdir plugins && cd plugins`
+#### Copy and build plugin:
 
-2.2. git clone https://github.com/Babrushka/TileRepair
+1. ```
+    cd avrix && mkdir plugins && cd plugins
+    ```
 
-2.3. gradle build
+2. ```
+    git clone https://github.com/Babrushka/TileRepair
+    ```
 
-### install files and launch game
+3. ```
+    gradle build
+    ```
 
-3.1. copy avrix/plugins/TileRepair/build/libs/tilerepair-v*.jar to "Project Zomboid"/plugins folder
-
-3.2. copy avrix/build/libs/Avrix-1.5.2.jar to "Project Zomboid" root folder
-
-3.3. copy avrix/scripts/AvrixLauncher-Client-NoSteam.bat "Project Zomboid" root folder
-
-3.4. configure if needed AvrixLauncher-Client-NoSteam.bat and run it to launch the game.
-
+> [!IMPORTANT] 
+> Building from sources requires JDK-17 for compability with the game!
 
