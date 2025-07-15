@@ -7,7 +7,7 @@ hotkey: 211
 ##############################
 
 #true/false - enabled/disabled
-deleteTiles: true  
+deleteTiles: false  
 
 #affected radius, 15 means a 31x31 square around player will be affected
 radius: 15          
@@ -38,7 +38,7 @@ unusedList2:
 #### restore floors func ####
 #############################
 
-restoreFloors: true        
+restoreFloors: false        
   
 #only specified tiles will be affected. same format as list described above;
 floorList: 
@@ -48,7 +48,7 @@ floorList:
 ##############################
 #### restore objects func ####
 ##############################
-restoreOtherObjects: true    
+restoreOtherObjects: false    
 
 ### complex procedure to restore default objects in chunk, leaving untouched objects created by users;
 ### to achieve best results it is recomennded to clear chunk, to get 99.999% effective restore . . .

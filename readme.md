@@ -14,9 +14,9 @@ Plugin behavior is configured via __config.yml__, please touch it carefully, wro
 Plugin allows to delete unwanted objects from around the player in specified radius (__radius__).
 
 Deleted tiles must be configured via one or more of 3 fields:
-    - __object.spritename__ in java is `object.spriteName` field 
-    - __sprite.name__ `object.sprite.name` or `object.getSprite().getName()`
-    - __spriteID__.
+* __object.spritename__ in java is `object.spriteName` field 
+* __sprite.name__ `object.sprite.name` or `object.getSprite().getName()`
+* __spriteID__ - regular one spriteID.
 
 Procedure can enabled or disabled in config file.
 
