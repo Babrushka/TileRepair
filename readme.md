@@ -4,7 +4,9 @@ This plugin is intended to use for repairing tiles/squares/chunks destroyed by g
 ### Launch in game
 
 After installing all files launch game through avrix launcer, sign in to server/singleplayer, and press <em>delete</em>. It will launch described above procedures (all in one, but each procedure can be disabled).
-Hotket can be configured in __config.yml__ created automatically after 1st lauch of game with plugin.
+Hotkey can be configured in __config.yml__ created automatically after 1st lauch of game with plugin.
+
+---
 
 #### Delete unwanted tiles, even not native objects created programmaticaly.
 
@@ -38,9 +40,9 @@ For user the result of this procedure looks same as Restore floors, but this pro
 
 1. Download and install [Avrix Core](https://github.com/Brov3r/Avrix)
 
-    1. Download Avrix-Core-1.5.2.jar from releases page and put it to "Project Zomboid" root folder
+    1. Download [Avrix-Core-1.5.2.jar](https://github.com/Brov3r/Avrix/releases/download/v1.5.2/Avrix-Core-1.5.2.jar) from releases page and put it to "Project Zomboid" root folder
 
-    2. Download AvrixLauncher-Client-NoSteam.bat from releases page and put it to "Project Zomboid" root folder
+    2. Download [AvrixLauncher-Client-NoSteam.bat](https://github.com/Brov3r/Avrix/releases/download/v1.5.2/AvrixLauncher-Client-NoSteam.bat) from releases page and put it to "Project Zomboid" root folder
 
         Configure AvrixLauncher-Client-NoSteam.bat if needed.
 
