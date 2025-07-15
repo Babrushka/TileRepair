@@ -9,3 +9,4 @@ build/*
 build/libs/*
 !build/libs/tilerepair-*.jar
 launch.bat
+build/tmp/*
