@@ -35,7 +35,8 @@ For user the result of this procedure looks same as Restore floors, but this pro
 > [!TIP] 
 > To achieve best results it is recommended to clear chunk from user objects placed on squares, where default one's can be spawned, close all doors, etc.
 
-> [!IMPORTANT] All Described above procedures only works on level 0. Probably feature versions will allow to use other values.
+> [!IMPORTANT] 
+> All Described above procedures only works on level 0. Probably feature versions will allow to use other values.
 ***
 ## Install through compiled binaries
 
