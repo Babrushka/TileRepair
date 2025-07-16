@@ -1,6 +1,8 @@
 .gradle/
 .vscode/
-/bin/**
-/build/** 
+bin
+build/*
+build/*/*
+build/*/*/*
 !build/libs/tilerepair-*.jar
 launch.bat
