@@ -2,7 +2,6 @@
 .vscode/
 bin
 build/*
-build/*/*
-build/*/*/*
+!build/libs
 !build/libs/tilerepair-*.jar
 launch.bat
