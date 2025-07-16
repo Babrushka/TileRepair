@@ -1,12 +1,6 @@
-build/resources
-build/tmp
 .gradle/
 .vscode/
-bin/*
-bin/
-build/*
-!build/libs
-build/libs/*
+/bin/**
+/build/** 
 !build/libs/tilerepair-*.jar
 launch.bat
-build/tmp/*

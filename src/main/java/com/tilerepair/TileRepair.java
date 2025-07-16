@@ -310,7 +310,6 @@ public class TileRepair {
     private void restoreObjectOnSquare(int i, int j, int h) {
         IsoGridSquare square = cell.getGridSquare(wx * 10 + i, wy * 10 + j, h);
         int oldObjectsize = square.getObjects().size();
-        
         ArrayList<IsoObject> oldObjects = new ArrayList<IsoObject>();
         for (int o = 0; o < oldObjectsize; o++) {
             oldObjects.add(square.getObjects().get(o));
