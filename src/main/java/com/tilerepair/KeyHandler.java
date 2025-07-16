@@ -12,19 +12,20 @@ import com.avrix.ui.NanoContext;
  */
 public class KeyHandler extends OnKeyPressedEvent {
     int hotkey;
+    int[] keys;
     boolean restoreFloors, deleteTiles, restoreOtherObjects;
 
     private TileRepair CTileRepair = null;
-    public KeyHandler(int _radius, int _key, boolean[] _flags, List<Object>[] _TilesLists) {
+    public KeyHandler(int _radius, int _key, boolean[] _flags, List<Object>[] _TilesLists, String[] _levels, int[] _keys) {
 
         this.hotkey = _key;
 
         this.deleteTiles = _flags[0];
         this.restoreFloors = _flags[1];
         this.restoreOtherObjects = _flags[2];
-        
 
-        this.CTileRepair = new TileRepair(_radius, _TilesLists);
+        this.keys = _keys;
+        this.CTileRepair = new TileRepair(_radius, _TilesLists, _levels);
     }
 
     
@@ -39,23 +40,59 @@ public class KeyHandler extends OnKeyPressedEvent {
         if (key == this.hotkey) {
 
             CTileRepair.Init();
-            if (this.deleteTiles) CTileRepair.deleteTiles();
-            
+            if (this.deleteTiles)
+                CTileRepair.deleteTiles();
+
             if (this.restoreFloors || this.restoreOtherObjects) {
 
                 CTileRepair.readDataFiles();
 
                 if (this.restoreFloors) {
-                    CTileRepair.restoreFloor();    
+                    CTileRepair.restoreFloors();
                 }
                 if (this.restoreOtherObjects) {
                     CTileRepair.restoreObjects();
                 }
-                    
+
                 CTileRepair.clearLot();
             }
-            
-            
+
+        }
+        else if (key == keys[0]) {
+            CTileRepair.Init();
+            if (this.deleteTiles)
+                CTileRepair.deleteTiles();
+        }
+        else if (key == keys[1]) {
+            CTileRepair.Init();
+            if (this.restoreFloors || this.restoreOtherObjects) {
+
+                CTileRepair.readDataFiles();
+
+                if (this.restoreFloors) {
+                    CTileRepair.restoreFloors();
+                }
+                if (this.restoreOtherObjects) {
+                    //CTileRepair.restoreObjects();
+                }
+
+                CTileRepair.clearLot();
+            }
+        }
+        else if (key == keys[2]) {
+            if (this.restoreFloors || this.restoreOtherObjects) {
+
+                CTileRepair.readDataFiles();
+
+                if (this.restoreFloors) {
+                    //CTileRepair.restoreFloors();
+                }
+                if (this.restoreOtherObjects) {
+                    CTileRepair.restoreObjects();
+                }
+
+                CTileRepair.clearLot();
+            }
         }
     }
 

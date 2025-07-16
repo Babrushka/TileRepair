@@ -3,27 +3,29 @@ This plugin is intended to use for repairing tiles/squares/chunks destroyed by g
 
 #### Launch in game
 
-After installing all files launch game through avrix launcer, sign in to server/singleplayer, and press <em>delete</em>. It will launch described below procedures (all in one, but each procedure can be disabled).
-Hotkey can be configured in __config.yml__ created automatically after 1st lauch of game with plugin.
-Plugin behavior is configured via __config.yml__, please touch it carefully, wrong definitions can harm a lot.
+After installing all files launch game through avrix launcer, sign in to server/singleplayer, and press specified in __config.yml__ hotkey. It will launch described below procedures.
+__config.yml__ is created automatically after 1st lauch of game with plugin (`PZ root/plugins/tilerepair-client-plugin/config.yml`).
+Please touch __config.yml__  carefully, wrong definitions can harm a lot.
 
 ---
 
 ### Delete unwanted tiles, even not native objects created programmaticaly.
 
-Plugin allows to delete unwanted objects from around the player in specified radius (__radius__).
+Plugin allows to delete unwanted objects from around the player in specified __radius__.
 
 Deleted tiles must be configured via one or more of 3 fields:
 * __object.spritename__ in java is `object.spriteName` field 
 * __sprite.name__ `object.sprite.name` or `object.getSprite().getName()`
 * __spriteID__ - regular one spriteID.
 
-Procedure can enabled or disabled in config file.
+Delete function skips trying to delete "main" floors, recieved by square.getFloor() in all cases, but can delete overlaying objects;
+Plugin support multiple object definitions through lists, for more details see __config.yml__
+
 
 ### Restore floors
 
 Restore floor function attempts to read tiledefinitions from native PZ *.lotpack files and apply them to all squares in player chunk (10x10 space around player, linked to gamegrid, not relative to player). 
-Algorigthm of restoring readind datafiles and applying changes is simillar to one, used when new unvisited chunks are created. Not a secret, it was copied and a bit mididied from PZ source code.
+Algorigthm of restoring tiles, reading datafiles and applying changes is simillar to one, used when new unvisited chunks are created. Not a secret, it was copied and a bit mididied from PZ source code.
 
 __floorList__ can be specified same way described above to restore floors only on specified tiles;
 > [!IMPORTANT]
@@ -31,13 +33,10 @@ __floorList__ can be specified same way described above to restore floors only o
 
 ### Restore other objecs
 
-For user the result of this procedure looks same as Restore floors, but this procedure is a bit complicated in comparsion to previous one. It creates all default objects in chunk (except floors), compares them with existing, delete copies, and tries to sync unique created objects to server, skipping sync on existing objects. This algo can lead to unexpected behaviour on complex chuncks with many user objects. 
+For user the result of this procedure looks same as Restore floors, but this procedure is a bit complicated in comparsion to previous one. It creates missing default objects in chunk (except floors), and tries to sync unique created objects to server, skipping sync on existing objects. This algo can lead to unexpected behaviour on complex chuncks with many user objects. 
 > [!TIP] 
 > To achieve best results it is recommended to clear chunk from user objects placed on squares, where default one's can be spawned, close all doors, etc.
 
-> [!IMPORTANT] 
-> All Described above procedures only works on level 0. Probably feature versions will allow to use other values.
-***
 ## Install through compiled binaries
 
 1. Download and install [Avrix Core](https://github.com/Brov3r/Avrix)
