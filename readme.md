@@ -7,6 +7,10 @@ After installing all files launch game through avrix launcer, sign in to server/
 __config.yml__ is created automatically after 1st lauch of game with plugin (`PZ root/plugins/tilerepair-client-plugin/config.yml`).
 Please touch __config.yml__  carefully, wrong definitions can harm a lot.
 
+> [!WARNING]
+> #### Applying any changes in multiplayer mode requires stable internet connection. To achieve best results it is recommended to aplly changes one by one, leaving the chunks after any actions, and re entering them to confirm the changes are synced to the server. Overwise async can lead to destroing or dupe wrong objects!!!
+
+
 ---
 
 ### Delete unwanted tiles, even not native objects created programmaticaly.
