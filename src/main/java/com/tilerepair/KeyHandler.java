@@ -1,4 +1,5 @@
 package com.tilerepair;
+import java.util.Arrays;
 import java.util.List;
 
 import com.avrix.events.OnKeyPressedEvent;
@@ -37,60 +38,20 @@ public class KeyHandler extends OnKeyPressedEvent {
      */
     @Override
     public void handleEvent(Integer key) {
-        if (key == this.hotkey) {
-
+        if (key == this.hotkey || key == this.keys[0] || key == this.keys[1] || key == this.keys[2]) {
             CTileRepair.Init();
-            if (this.deleteTiles)
+
+            if ((key==this.hotkey || key==this.keys[0]) && this.deleteTiles){
                 CTileRepair.deleteTiles();
-
-            if (this.restoreFloors || this.restoreOtherObjects) {
-
+            }
+            
+            if ((key == this.keys[1] || key == this.keys[2] || key == this.hotkey) && (this.restoreFloors || this.restoreOtherObjects)){
                 CTileRepair.readDataFiles();
-
-                if (this.restoreFloors) {
+                if (this.restoreFloors && (key == this.keys[1] || key == this.hotkey)) {
                     CTileRepair.restoreFloors();
-                }
-                if (this.restoreOtherObjects) {
+                } else if(this.restoreOtherObjects && (key == this.keys[2] || key == this.hotkey)){
                     CTileRepair.restoreObjects();
                 }
-
-                CTileRepair.clearLot();
-            }
-
-        }
-        else if (key == keys[0]) {
-            CTileRepair.Init();
-            if (this.deleteTiles)
-                CTileRepair.deleteTiles();
-        }
-        else if (key == keys[1]) {
-            CTileRepair.Init();
-            if (this.restoreFloors || this.restoreOtherObjects) {
-
-                CTileRepair.readDataFiles();
-
-                if (this.restoreFloors) {
-                    CTileRepair.restoreFloors();
-                }
-                if (this.restoreOtherObjects) {
-                    //CTileRepair.restoreObjects();
-                }
-
-                CTileRepair.clearLot();
-            }
-        }
-        else if (key == keys[2]) {
-            if (this.restoreFloors || this.restoreOtherObjects) {
-
-                CTileRepair.readDataFiles();
-
-                if (this.restoreFloors) {
-                    //CTileRepair.restoreFloors();
-                }
-                if (this.restoreOtherObjects) {
-                    CTileRepair.restoreObjects();
-                }
-
                 CTileRepair.clearLot();
             }
         }

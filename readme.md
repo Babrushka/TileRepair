@@ -29,7 +29,7 @@ Algorigthm of restoring tiles, reading datafiles and applying changes is similla
 
 __floorList__ can be specified same way described above to restore floors only on specified tiles;
 > [!IMPORTANT]
-> If game contains multiple floors, overlaying default one the changes will be applied only to first object recieved by square.getFloor() native procedure.
+> If game contains multiple floors, overlaying default one, then the changes will be applied only to first object recieved by square.getFloor() native procedure and can be unseen by user because applied object is laying below another visible one.
 
 ### Restore other objecs
 
