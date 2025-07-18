@@ -43,6 +43,8 @@ For user the result of this procedure looks same as Restore floors, but this pro
 
 ### Lock containers. 
 
+Function in development!
+
 Locks all containers inside rooms in the chunk where player is standing. Unsets obj.sprite.Properties.UnSet("CanScrap") and obj.sprite.Properties.UnSet("IsMoveAble") for each found container.
 
 ## Install through compiled binaries

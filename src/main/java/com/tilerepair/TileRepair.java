@@ -81,7 +81,9 @@ public class TileRepair {
         this.x = gsquare.getX();
         this.y = gsquare.getY();
         this.cell = player.getCell();
-        
+        this.chunk = player.getChunk();
+        this.wx = chunk.wx;
+        this.wy = chunk.wy;
         Field fmissingTiles = null;
         try {
             fmissingTiles = CellLoader.class.getDeclaredField("missingTiles");
@@ -424,14 +426,25 @@ public class TileRepair {
         for (int o = 0; o < objects.size(); o++) {
             RoomDef roomDef = metaGrid.getRoomAt(wx * 10 + i, wy * 10 + j, h);
             obj = objects.get(o);
-            if (obj.container!=null && roomDef!=null){
+            if (obj.container!=null && roomDef != null){
                 //obj.sprite.canBeRemoved = false;
-                //obj.sprite.Properties.UnSet("CabBreak");
+                //obj.sprite.Properties.UnSet("CanBreak");
+                //obj.sprite.Properties.UnSet("CanScrap");
+                //obj.sprite.Properties.UnSet("IsMoveAble");
+                
+                //obj.removeFromSquare();
+                if (zombie.network.GameClient.connection != null) {
+                    //this.sendPacketDestroyObjectonSquare(square, obj);
+                }
+                obj.NoPicking = true;
                 obj.sprite.Properties.UnSet("CanScrap");
+                //obj.sprite.Properties.UnSet("CanBreak");
                 obj.sprite.Properties.UnSet("IsMoveAble");
+                //square.AddTileObject(obj);
+                //square.AddSpecialObject(obj);
                 //obj.sprite.Properties.UnSet("BlocksPlacement");
                 if (zombie.network.GameClient.connection != null) {
-                    obj.transmitUpdatedSprite();
+                    //obj.transmitCompleteItemToServer();
                 }
             }
         }
