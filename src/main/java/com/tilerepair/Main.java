@@ -38,26 +38,17 @@ public class Main extends Plugin {
         objectLists[1] = config.getList("tilesToRemoveList");
         objectLists[0] = config.getList("floorList");
 
-        boolean[] flags = new boolean[3];
-        flags[0] = config.getBoolean("deleteTiles");
-        flags[1] = config.getBoolean("restoreFloors");
-        flags[2] = config.getBoolean("restoreOtherObjects");
-
-        String[] levels = new String[3];
-
-        levels[0] = config.getString("levelsD");
-        levels[1] = config.getString("levelsF");
-        levels[2] = config.getString("levelsR");
+        String levels = config.getString("levels");
 
         int rad = config.getInt("radius");
-        int key = config.getInt("hotkey");
 
-        int[] keys = new int[3];
+        int[] keys = new int[4];
         keys[0] = config.getInt("Dkey");
         keys[1] = config.getInt("Fkey");
         keys[2] = config.getInt("Rkey");
+        keys[3] = config.getInt("Ckey");
 
-        EventManager.addListener(new KeyHandler(rad, key, flags, objectLists, levels, keys));
+        EventManager.addListener(new KeyHandler(rad, objectLists, levels, keys));
 
         System.out.println("[#] Config: ");
         

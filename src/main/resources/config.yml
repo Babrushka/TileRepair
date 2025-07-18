@@ -1,27 +1,22 @@
-#####  global hotkey definition #####
-hotkey: 211 
-#delete is default key with 211 code. Notice: it launches all procedures together, it is not a modifier for separate hotkeys configured below;
+#####  hotkey definition #####
 #keycodes works only on my computer, i haven't checked them on other systems, and i dont recognize this codes as any standart.
 #delete is default key with 211 code.
 #num1-num3 is 79-81 
 #num4-num6 is 75-78
 #num7-num9 is 71-73
 
+levels: "0,1,2,3,4,5,6,7"
 ##############################
 #### delete tiles funtion ####
 ##############################
-
-#true/false - enabled/disabled
-deleteTiles: false  
 Dkey: 71
-levelsD: "0,1,2,3,4,5,6,7"
 
 #specify levels comma separated;
 #affected radius, 15 means a 31x31 square around player will be affected
 
 radius: 15          
 
-# object.spritename:"carpentry_01_16", spriteid: 2000000 - example of properties for cheatbox.
+# object.spritename:"carpentry_01_16", spriteid: 20000000 - example of properties for cheatbox.
 
 tilesToRemoveList:
   - spriteID: 2000000
@@ -40,11 +35,8 @@ tilesToRemoveList:
 
 #############################n
 #### restore floors func ####
-#############################
-
-restoreFloors: false        
+#############################  
 Fkey: 72
-levelsF: "0,1,2,3,4,5,6,7"
 
 #only specified tiles will be affected. same format as list described above;
 floorList: 
@@ -52,7 +44,10 @@ floorList:
 
 ##############################
 #### restore objects func ####
-##############################
-restoreOtherObjects: false    
+##############################  
 Rkey: 73
-levelsR: "0,1,2,3,4,5,6,7"
+
+##############################
+####    Lock Containers   ####
+##############################  
+Ckey: 75

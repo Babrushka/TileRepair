@@ -10,7 +10,7 @@ plugins {
  * Project Variables
  */
 group = 'com.tilerepair'
-version = 'v0.4'
+version = 'v0.5'
 
 /**
  * Path to the compiled Jar file

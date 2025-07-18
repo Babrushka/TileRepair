@@ -17,8 +17,11 @@ import zombie.iso.IsoCell;
 import zombie.iso.IsoChunk;
 import zombie.iso.IsoGridSquare;
 import zombie.iso.IsoLot;
+import zombie.iso.IsoMetaGrid;
 import zombie.iso.IsoObject;
+import zombie.iso.IsoWorld;
 import zombie.iso.LotHeader;
+import zombie.iso.RoomDef;
 import zombie.iso.SpriteDetails.IsoFlagType;
 import zombie.iso.sprite.IsoSprite;
 import zombie.iso.sprite.IsoSpriteInstance;
@@ -44,20 +47,19 @@ public class TileRepair {
 
     List<Object> tilesToRemoveList;
     List<Object> floorList;
-    int[][] levels;
+    int[] levels;
 
     private HashSet<String> missingTiles = null;
     private Field finfo = null, fm_offsetInData = null, fm_data = null;
 
-    public TileRepair(int _radius, List<Object>[] lists, String[] _levels) {
+    public TileRepair(int _radius, List<Object>[] lists, String _levels) {
         this.radius = _radius;
-        levels = new int[3][];
         for (int i = 0; i < 3;i++) {
-            String[] levelsstrings = _levels[i].split(",");
-            levels[i] = new int[levelsstrings.length];
+            String[] levelsstrings = _levels.split(",");
+            levels = new int[levelsstrings.length];
             int j=0;
             for (String string : levelsstrings) {
-                levels[i][j++] = Integer.parseInt(string);
+                levels[j++] = Integer.parseInt(string);
             }
         }
         
@@ -268,7 +270,7 @@ public class TileRepair {
     public void restoreFloors() {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                for (int h : levels[1]) {
+                for (int h : levels) {
                     IsoGridSquare _square = cell.getGridSquare(wx * 10 + i, wy * 10 + j, h);
                     if (_square!=null) restoreFloor(i, j, h);
                 }
@@ -286,7 +288,7 @@ public class TileRepair {
                 if (zombie.network.GameClient.connection != null)
                     object.transmitCompleteItemToServer();
             }
-            
+
         }
         if (compareObjects(object, floorList)) {
             object.clearAttachedAnimSprite();
@@ -306,6 +308,7 @@ public class TileRepair {
 
         }
     }
+
     
     private void restoreObjectOnSquare(int i, int j, int h) {
         IsoGridSquare square = cell.getGridSquare(wx * 10 + i, wy * 10 + j, h);
@@ -334,8 +337,7 @@ public class TileRepair {
                 }
             }
             if (!exist) {
-                CellLoader.DoTileObjectCreation(sprite, sprite.getType(), square, cell, wx * 10 + i,
-                        wy * 10 + j, h, string);
+                CellLoader.DoTileObjectCreation(sprite, sprite.getType(), square, cell, wx * 10 + i, wy * 10 + j, h, string);
             }
         }
         PZArrayList<IsoObject> newObjects = square.getObjects();
@@ -356,8 +358,10 @@ public class TileRepair {
 
             }
             if (!objectsEqual) {
-                if (zombie.network.GameClient.connection != null)
+                if (zombie.network.GameClient.connection != null) {
                     o1.transmitCompleteItemToServer();
+                }
+                    
             }
         }
     }
@@ -365,7 +369,7 @@ public class TileRepair {
     public void restoreObjects() {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                for (int h : levels[2]) {
+                for (int h : levels) {
                     IsoGridSquare _square = cell.getGridSquare(wx * 10 + i, wy * 10 + j, h);
                     if (_square != null) {
                         restoreObjectOnSquare(i, j, h);
@@ -378,7 +382,7 @@ public class TileRepair {
     public void deleteTiles() {
         for (int i = (x - radius); i <= (x + radius); i++) {
             for (int j = y - radius; j <= (y + radius); j++) {
-                for (int h : levels[0]) {
+                for (int h : levels) {
                     IsoGridSquare square = cell.getGridSquare(i, j, h);
                     if (square != null) {
                         PZArrayList<IsoObject> objects = square.getObjects();
@@ -386,8 +390,7 @@ public class TileRepair {
                             IsoObject object = objects.get(k);
                             IsoObject floor = square.getFloor();
                             if (!object.equals(floor)) {
-                                if (compareObjects(object, this.tilesToRemoveList)) 
-                                {
+                                if (compareObjects(object, this.tilesToRemoveList)) {
                                     if (zombie.network.GameClient.connection != null)
                                         sendPacketDestroyObjectonSquare(square, object);
                                     square.RemoveTileObject(object);
@@ -396,6 +399,39 @@ public class TileRepair {
 
                         }
                     }
+                }
+            }
+        }
+    }
+
+    public void lockContainers() {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                for (int h : levels) {
+                    IsoGridSquare _square = cell.getGridSquare(wx * 10 + i, wy * 10 + j, h);
+                    if (_square != null) {
+                        lockContainer(i, j, h);
+                    }
+                }
+            }
+        }
+    }
+    private void lockContainer(int i, int j, int h) {
+        IsoGridSquare square = cell.getGridSquare(wx * 10 + i, wy * 10 + j, h);
+        IsoObject obj = null;
+        PZArrayList<IsoObject> objects = square.getObjects();
+        IsoMetaGrid metaGrid = IsoWorld.instance.getMetaGrid();
+        for (int o = 0; o < objects.size(); o++) {
+            RoomDef roomDef = metaGrid.getRoomAt(wx * 10 + i, wy * 10 + j, h);
+            obj = objects.get(o);
+            if (obj.container!=null && roomDef!=null){
+                //obj.sprite.canBeRemoved = false;
+                //obj.sprite.Properties.UnSet("CabBreak");
+                obj.sprite.Properties.UnSet("CanScrap");
+                obj.sprite.Properties.UnSet("IsMoveAble");
+                //obj.sprite.Properties.UnSet("BlocksPlacement");
+                if (zombie.network.GameClient.connection != null) {
+                    obj.transmitUpdatedSprite();
                 }
             }
         }

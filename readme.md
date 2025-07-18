@@ -41,6 +41,10 @@ For user the result of this procedure looks same as Restore floors, but this pro
 > [!TIP] 
 > To achieve best results it is recommended to clear chunk from user objects placed on squares, where default one's can be spawned, close all doors, etc.
 
+### Lock containers. 
+
+Locks all containers inside rooms in the chunk where player is standing. Unsets obj.sprite.Properties.UnSet("CanScrap") and obj.sprite.Properties.UnSet("IsMoveAble") for each found container.
+
 ## Install through compiled binaries
 
 1. Download and install [Avrix Core](https://github.com/Brov3r/Avrix)
